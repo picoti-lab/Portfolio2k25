@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
-    // Scroll animation
+    // Scroll animation for elements (fade-in)
     const observerOptions = {
         root: null, // viewport
         rootMargin: '0px',
@@ -65,8 +65,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+    // Preloader functionality
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        window.addEventListener('load', () => {
+            // Add a slight delay to ensure all content (especially images) is loaded
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                // You can also remove the preloader element from the DOM after it hides
+                // preloader.addEventListener('transitionend', () => preloader.remove());
+            }, 500); // 500ms delay after load event
+        });
+    }
+
     // Run on load and resize
-    window.addEventListener('load', checkInitialVisibility);
-    window.addEventListener('resize', checkInitialVisibility);
+    // Only check initial visibility after preloader has likely faded or if no preloader
+    if (!preloader) {
+        window.addEventListener('load', checkInitialVisibility);
+        window.addEventListener('resize', checkInitialVisibility);
+    } else {
+        // If preloader exists, check initial visibility shortly after it hides
+        window.addEventListener('load', () => {
+            setTimeout(checkInitialVisibility, 600); // After preloader hides (500ms + a buffer)
+        });
+        window.addEventListener('resize', checkInitialVisibility);
+    }
 
 });

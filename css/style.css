@@ -23,7 +23,9 @@
     --glow-cyan-light: 0 0 10px rgba(0, 188, 212, 0.6), 0 0 20px rgba(0, 188, 212, 0.3);
     --glow-cyan-strong: 0 0 15px rgba(0, 188, 212, 0.8), 0 0 30px rgba(0, 188, 212, 0.5);
     --glow-green-light: 0 0 10px rgba(0, 247, 0, 0.6), 0 0 20px rgba(0, 247, 0, 0.3);
+    --glow-green-strong: 0 0 20px rgba(0, 247, 0, 0.9), 0 0 40px rgba(0, 247, 0, 0.6); /* Stronger green glow */
     --glow-orange-light: 0 0 10px rgba(255, 140, 0, 0.6), 0 0 20px rgba(255, 140, 0, 0.3);
+    --glow-orange-strong: 0 0 20px rgba(255, 140, 0, 0.9), 0 0 40px rgba(255, 140, 0, 0.6); /* Stronger orange glow */
 
     /* Shadows, Transitions, and Border Radii */
     --transition-speed: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother, more defined transitions */
@@ -125,6 +127,21 @@ img {
     box-shadow: var(--box-shadow-futuristic);
     letter-spacing: 1px; /* More spaced out text */
     text-transform: uppercase;
+    position: relative; /* For glow effect on hover */
+    overflow: hidden; /* To contain pseudo-element glow */
+}
+
+.btn::before { /* Inner border glow */
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: var(--border-radius-tech);
+    border: 2px solid transparent;
+    transition: all var(--transition-speed);
+    z-index: 0;
 }
 
 .primary-btn {
@@ -142,6 +159,12 @@ img {
     box-shadow: var(--glow-cyan-strong), var(--box-shadow-elevated-futuristic);
 }
 
+.primary-btn:hover::before {
+    border-color: var(--accent-cyan);
+    box-shadow: var(--glow-cyan-strong);
+}
+
+
 .secondary-btn {
     background-color: transparent;
     color: var(--accent-cyan);
@@ -156,6 +179,11 @@ img {
     transform: translateY(-5px) scale(1.02);
     box-shadow: var(--box-shadow-elevated-futuristic);
     text-shadow: none;
+}
+
+.secondary-btn:hover::before {
+    border-color: var(--accent-cyan);
+    box-shadow: var(--glow-cyan-strong);
 }
 
 /* --- Header (Navigation) --- */
@@ -454,6 +482,7 @@ section:nth-child(odd) {
     border: 1px solid rgba(0, 188, 212, 0.1); /* Subtle cyan border */
     display: flex;
     flex-direction: column;
+    position: relative; /* For overflow and internal animations */
 }
 
 .project-card:hover {
@@ -481,6 +510,24 @@ section:nth-child(odd) {
 .project-card:hover .project-image-wrapper img {
     transform: scale(1.08);
     filter: brightness(1); /* Brighten on hover */
+}
+
+/* Optional: overlay effect on project card hover */
+.project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 188, 212, 0.1); /* Subtle cyan overlay */
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+    pointer-events: none;
+}
+
+.project-card:hover::after {
+    opacity: 1;
 }
 
 .project-info {
@@ -598,7 +645,7 @@ section:nth-child(odd) {
 
 .skill-card:hover i {
     color: var(--accent-green); /* Green icon on hover */
-    transform: scale(1.15);
+    transform: scale(1.15) rotateY(15deg); /* Added subtle rotation */
     text-shadow: var(--glow-green-strong);
 }
 
@@ -870,6 +917,71 @@ main {
     margin: 0 8px;
     text-shadow: var(--glow-orange-light);
 }
+
+/* --- Preloader Styles --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-dark); /* Dark background for preloader */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top */
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+    color: var(--accent-cyan);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.spinner {
+    width: 80px;
+    height: 80px;
+    border: 8px solid rgba(0, 188, 212, 0.2); /* Light cyan transparent border */
+    border-top: 8px solid var(--accent-cyan); /* Solid cyan top */
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto 25px auto;
+    box-shadow: var(--glow-cyan-light);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    text-shadow: var(--glow-green-light);
+}
+
+.dots {
+    display: inline-block;
+    width: 0;
+    overflow: hidden;
+    vertical-align: bottom;
+    animation: typing-dots 1.5s infinite steps(4, end);
+}
+
+@keyframes typing-dots {
+    0% { width: 0; }
+    25% { width: .5em; }
+    50% { width: 1em; }
+    75% { width: 1.5em; }
+    100% { width: 0; }
+}
+
 
 /* --- Responsive Design (Media Queries) --- */
 
