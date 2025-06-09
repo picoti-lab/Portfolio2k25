@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
-    // Scroll animation (Fade-in effect)
+    // Scroll animation
     const observerOptions = {
         root: null, // viewport
         rootMargin: '0px',
@@ -69,25 +69,4 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('load', checkInitialVisibility);
     window.addEventListener('resize', checkInitialVisibility);
 
-    // Optional: Typewriter Effect for Hero Section Titles
-    // Uncomment this section if you want the typewriter animation
-    /*
-    const typewriterElements = document.querySelectorAll('.typewriter-effect, .typewriter-effect-delay');
-    typewriterElements.forEach(el => {
-        const text = el.dataset.text;
-        el.textContent = ''; // Clear initial text
-        let i = 0;
-        let speed = 50; // typing speed in ms
-
-        function typeWriter() {
-            if (i < text.length) {
-                el.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, speed);
-            }
-        }
-        // Small delay to ensure CSS animation starts first
-        setTimeout(typeWriter, el.classList.contains('typewriter-effect-delay') ? 3000 : 500); 
-    });
-    */
 });
