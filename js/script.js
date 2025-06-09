@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
-    // Scroll animation
+    // Scroll animation (Fade-in effect)
     const observerOptions = {
         root: null, // viewport
         rootMargin: '0px',
